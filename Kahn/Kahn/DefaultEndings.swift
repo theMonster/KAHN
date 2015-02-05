@@ -37,7 +37,7 @@ public extension Endpoint {
     public func PUT(body:NSData?) -> DefaultReturn {
         return { (options, response) in
             self.body = { (_) in return body }
-            self.method = .POST
+            self.method = .PUT
             self.makeRequest(options, response)
         }
     }
@@ -45,7 +45,7 @@ public extension Endpoint {
     public func PUT(body:BuildDataClosure) -> DefaultReturn {
         return { (options, response) in
             self.body = body
-            self.method = .POST
+            self.method = .PUT
             self.makeRequest(options, response)
         }
     }
@@ -53,7 +53,7 @@ public extension Endpoint {
     public func PATCH(body:NSData?) -> DefaultReturn {
         return { (options, response) in
             self.body = { (_) in return body }
-            self.method = .POST
+            self.method = .PATCH
             self.makeRequest(options, response)
         }
     }
@@ -61,7 +61,7 @@ public extension Endpoint {
     public func PATCH(body:BuildDataClosure) -> DefaultReturn {
         return { (options, response) in
             self.body = body
-            self.method = .POST
+            self.method = .PATCH
             self.makeRequest(options, response)
         }
     }

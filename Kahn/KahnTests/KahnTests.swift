@@ -13,11 +13,13 @@ import Kahn
 class HTTPBin : Endpoint {
     override init() {
         super.init()
-        self.baseURL = (NSURL(string: "https://httpbin.org")!, nil)
+        self.setBaseURL(NSURL(string: "https://httpbin.org")!)
     }
 }
 let get = HTTPBin().setEndpoint("get").GET()
 let post = HTTPBin().setEndpoint("post").POST(nil)
+let put = HTTPBin().setEndpoint("put").PUT(nil)
+let patch = HTTPBin().setEndpoint("patch").PATCH(nil)
 
 class KahnTests: XCTestCase {
     
@@ -32,14 +34,27 @@ class KahnTests: XCTestCase {
     }
     
     func testHTTPBinGet() {
-        get (options:nil) { (data, response, error) -> Void in
-            println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
-        }
+        runAnEndpoint(get)
     }
     
     func testHTTPBinPost() {
-        post (options:nil) { (data, response, error) -> Void in
+        runAnEndpoint(post)
+    }
+    
+    func testHTTPBinPut() {
+        runAnEndpoint(put)
+    }
+    
+    func testHTTPBinPatch() {
+        runAnEndpoint(patch)
+    }
+    
+    func runAnEndpoint(closure:Endpoint.DefaultReturn) {
+        let e = self.expectationWithDescription("endpoint")
+        closure (options: nil) { (data, response, error) -> Void in
             println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
+            e.fulfill()
         }
+        waitForExpectationsWithTimeout(10, handler: nil)
     }
 }
