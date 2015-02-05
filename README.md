@@ -1,4 +1,6 @@
 KAHN
 ====
 
-Kick Ass HTTP Networking
+*K*ick *A*ss *H*TTP *N*etworking
+
+![KHAAAAAAN](/KHAAAAAN.gif)
