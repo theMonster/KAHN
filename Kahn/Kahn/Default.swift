@@ -21,7 +21,7 @@ public extension Endpoint {
     
     public func POST(body:NSData?) -> DefaultReturn {
         return { (options, response) in
-            self.body = (body, nil)
+            self.body = { (_) in return body }
             self.method = .POST
             self.makeRequest(options, response)
         }
@@ -29,7 +29,7 @@ public extension Endpoint {
     
     public func POST(body:BuildDataClosure) -> DefaultReturn {
         return { (options, response) in
-            self.body = (nil, body)
+            self.body = body
             self.method = .POST
             self.makeRequest(options, response)
         }

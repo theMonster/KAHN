@@ -26,30 +26,30 @@ public class Endpoint {
     public typealias BuildDataClosure = ((options:[String:AnyObject]?) -> NSData?)
     
     public var method:HTTPMethod = .GET
-    public var baseURL:(NSURL?, BuildURLClosure?)
-    public var endpoint:(String?, BuildStringClosure?)
+    public var baseURL:BuildURLClosure?
+    public var endpoint:BuildStringClosure?
     public var headers:[String:String]?
-    public var body:(NSData?, BuildDataClosure?)
+    public var body:BuildDataClosure?
     
     public init() {}
     
     public func setBaseURL(baseURL:NSURL) -> Endpoint {
-        self.baseURL = (baseURL, nil)
+        self.baseURL = { (_) in return baseURL }
         return self
     }
     
     public func setBaseURL(closure:BuildURLClosure) -> Endpoint {
-        self.baseURL = (nil, closure)
+        self.baseURL = closure
         return self
     }
     
     public func setEndpoint(endpoint:String) -> Endpoint {
-        self.endpoint = (endpoint, nil)
+        self.endpoint = { (_) in return endpoint }
         return self
     }
     
     public func setEndpoint(closure:BuildStringClosure) -> Endpoint {
-        self.endpoint = (nil, closure)
+        self.endpoint = closure
         return self
     }
     
@@ -63,20 +63,16 @@ public class Endpoint {
         let session = NSURLSession(configuration: config, delegate: nil, delegateQueue: NSOperationQueue.mainQueue())
         // build url
         func buildFullURL() -> NSURL {
-            var url:NSURL
             // get url
-            if let baseURL = baseURL.0 {
-                url = baseURL
-            } else if let baseURLClosure = baseURL.1 {
+            var url:NSURL
+            if let baseURLClosure = baseURL {
                 url = baseURLClosure(options: options)
             } else {
                 fatalError("You must set a baseURL to hit")
             }
             // get endpoint
             var end:String?
-            if let endpoint = endpoint.0 {
-                end = endpoint
-            } else if let endpointClosure = endpoint.1 {
+            if let endpointClosure = endpoint {
                 end = endpointClosure(options: options)
             }
             
@@ -90,9 +86,7 @@ public class Endpoint {
         request.HTTPMethod = method.rawValue
         request.allHTTPHeaderFields = self.headers
         // get the body if there is one
-        if let body = self.body.0 {
-            request.HTTPBody = body
-        } else if let body = self.body.1 {
+        if let body = self.body {
             request.HTTPBody = body(options: options)
         }
         // set the task and run it
