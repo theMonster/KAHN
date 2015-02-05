@@ -20,6 +20,13 @@ public enum HTTPMethod: String {
     case CONNECT = "CONNECT"
 }
 
+public enum HTTPBody {
+    case Data(NSData)
+    case File(NSURL)
+    case Custom(Endpoint.BuildDataClosure)
+    case Multipart([String: HTTPBody])
+}
+
 public class Endpoint {
     public typealias BuildStringClosure = ((options:[String:AnyObject]?) -> String)
     public typealias BuildURLClosure = ((options:[String:AnyObject]?) -> NSURL)
@@ -29,9 +36,11 @@ public class Endpoint {
     public var baseURL:(NSURL?, BuildURLClosure?)
     public var endpoint:(String?, BuildStringClosure?)
     public var headers:[String:String]?
-    public var body:(NSData?, BuildDataClosure?)
+    public var body:HTTPBody?
     
-    public init() {}
+    public init() {
+    
+    }
     
     public func setBaseURL(baseURL:NSURL) -> Endpoint {
         self.baseURL = (baseURL, nil)
@@ -90,10 +99,19 @@ public class Endpoint {
         request.HTTPMethod = method.rawValue
         request.allHTTPHeaderFields = self.headers
         // get the body if there is one
-        if let body = self.body.0 {
-            request.HTTPBody = body
-        } else if let body = self.body.1 {
-            request.HTTPBody = body(options: options)
+        if let b = body {
+            switch b {
+            case .Data(let data):
+                request.HTTPBody = data
+            case .File(let url):
+                break // TODO: Do me
+            case .Custom(let closure):
+                request.HTTPBody = closure(options: options)
+            case .Multipart(let parts):
+                break // TODO: Do me
+            default:
+                break
+            }
         }
         // set the task and run it
         let task = session.dataTaskWithRequest(request, completionHandler: response)
