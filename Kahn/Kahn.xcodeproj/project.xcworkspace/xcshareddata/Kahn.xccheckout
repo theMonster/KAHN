@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>732C268A-A25A-456B-AFF4-3DD5885C1D52</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Kahn</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>313FFF5D6F5659994F8A5C6B61B99A2CB3B90FCF</key>
+		<string>https://github.com/Zoyt/KAHN.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Kahn/Kahn.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>313FFF5D6F5659994F8A5C6B61B99A2CB3B90FCF</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Zoyt/KAHN.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>313FFF5D6F5659994F8A5C6B61B99A2CB3B90FCF</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>313FFF5D6F5659994F8A5C6B61B99A2CB3B90FCF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>KAHN</string>
+		</dict>
+	</array>
+</dict>
+</plist>

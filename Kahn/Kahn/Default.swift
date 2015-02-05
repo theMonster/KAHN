@@ -8,29 +8,37 @@
 
 import Foundation
 
+extension HTTPBody {
+    static func readFromFile(url: NSURL) -> HTTPBody {
+        var data = NSData(contentsOfURL: url)!
+        return HTTPBody.Data(data)
+    }
+}
+
 public extension Endpoint {
     public typealias DefaultResponseClosure = ((data:NSData?, response:NSURLResponse?, error:NSError?) -> Void)
     public typealias DefaultReturn = ((options:[String:AnyObject]?, response:DefaultResponseClosure) -> Void)
     
     public func GET() -> DefaultReturn {
-        return { (options, response) in
-            self.method = .GET
-            self.makeRequest(options, response)
-        }
+        return Request(.GET, body: nil)
     }
     
-    public func POST(body:NSData?) -> DefaultReturn {
-        return { (options, response) in
-            self.body = (body, nil)
-            self.method = .POST
-            self.makeRequest(options, response)
-        }
+    public func POST(body: NSData?) -> DefaultReturn {
+        return POST(HTTPBody.Data(body!))
     }
     
-    public func POST(body:BuildDataClosure) -> DefaultReturn {
+    public func POST(body: BuildDataClosure) -> DefaultReturn {
+        return POST(HTTPBody.Custom(body))
+    }
+    
+    public func POST(body: HTTPBody) -> DefaultReturn {
+        return Request(.POST, body: body)
+    }
+    
+    public func Request(method: HTTPMethod, body: HTTPBody?) -> DefaultReturn {
         return { (options, response) in
-            self.body = (nil, body)
-            self.method = .POST
+            self.body = body
+            self.method = method
             self.makeRequest(options, response)
         }
     }

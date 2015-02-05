@@ -18,6 +18,7 @@ class HTTPBin : Endpoint {
 }
 let get = HTTPBin().setEndpoint("get").GET()
 let post = HTTPBin().setEndpoint("post").POST(nil)
+let customMethod = HTTPBin().setEndpoint("delete").Request(HTTPMethod(rawValue: "DELETE")!, body: nil) // Let's pretent DELETE was not a predefined HTTP method
 
 class KahnTests: XCTestCase {
     
@@ -39,6 +40,12 @@ class KahnTests: XCTestCase {
     
     func testHTTPBinPost() {
         post (options:nil) { (data, response, error) -> Void in
+            println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
+        }
+    }
+    
+    func testHTTPBinCustom() {
+        customMethod (options: nil) { (data, response, error) in
             println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
         }
     }
