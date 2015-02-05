@@ -10,13 +10,16 @@ import UIKit
 import XCTest
 import Kahn
 
-class KahnTests: XCTestCase {
-    class HTTPBin : Endpoint {
-        override init() {
-            super.init()
-            self.baseURL = (NSURL(string: "https://httpbin.org")!, nil)
-        }
+class HTTPBin : Endpoint {
+    override init() {
+        super.init()
+        self.baseURL = (NSURL(string: "https://httpbin.org")!, nil)
     }
+}
+let get = HTTPBin().setEndpoint("get").GET()
+let post = HTTPBin().setEndpoint("post").POST(nil)
+
+class KahnTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -29,14 +32,12 @@ class KahnTests: XCTestCase {
     }
     
     func testHTTPBinGet() {
-        let get = HTTPBin().setEndpoint("get").GET()
         get (options:nil) { (data, response, error) -> Void in
             println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
         }
     }
     
     func testHTTPBinPost() {
-        let post = HTTPBin().setEndpoint("post").POST(nil)
         post (options:nil) { (data, response, error) -> Void in
             println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
         }
