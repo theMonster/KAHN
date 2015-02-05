@@ -22,9 +22,8 @@ public enum HTTPMethod: String {
 
 public enum HTTPBody {
     case Data(NSData)
-    case File(NSURL)
     case Custom(Endpoint.BuildDataClosure)
-    case Multipart([String: HTTPBody])
+    case Multipart([String: HTTPBody]) // TODO: Make sure the value is not another multipart
 }
 
 public class Endpoint {
@@ -103,8 +102,6 @@ public class Endpoint {
             switch b {
             case .Data(let data):
                 request.HTTPBody = data
-            case .File(let url):
-                break // TODO: Do me
             case .Custom(let closure):
                 request.HTTPBody = closure(options: options)
             case .Multipart(let parts):

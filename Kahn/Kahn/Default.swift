@@ -8,6 +8,13 @@
 
 import Foundation
 
+extension HTTPBody {
+    static func readFromFile(url: NSURL) -> HTTPBody {
+        var data = NSData(contentsOfURL: url)!
+        return HTTPBody.Data(data)
+    }
+}
+
 public extension Endpoint {
     public typealias DefaultResponseClosure = ((data:NSData?, response:NSURLResponse?, error:NSError?) -> Void)
     public typealias DefaultReturn = ((options:[String:AnyObject]?, response:DefaultResponseClosure) -> Void)
