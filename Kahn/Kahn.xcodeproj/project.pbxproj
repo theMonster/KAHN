@@ -11,7 +11,7 @@
 		252A14101A2D7AEA00C4B5D3 /* Kahn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252A14041A2D7AEA00C4B5D3 /* Kahn.framework */; };
 		252A14171A2D7AEA00C4B5D3 /* KahnTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252A14161A2D7AEA00C4B5D3 /* KahnTests.swift */; };
 		D891F3331A83E2FB003F101B /* KAHN.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891F3321A83E2FB003F101B /* KAHN.swift */; };
-		D891F3351A83E459003F101B /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891F3341A83E459003F101B /* Default.swift */; };
+		D891F3351A83E459003F101B /* DefaultEndings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891F3341A83E459003F101B /* DefaultEndings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +32,7 @@
 		252A14151A2D7AEA00C4B5D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		252A14161A2D7AEA00C4B5D3 /* KahnTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KahnTests.swift; sourceTree = "<group>"; };
 		D891F3321A83E2FB003F101B /* KAHN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAHN.swift; sourceTree = "<group>"; };
-		D891F3341A83E459003F101B /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
+		D891F3341A83E459003F101B /* DefaultEndings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultEndings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				252A14091A2D7AEA00C4B5D3 /* Kahn.h */,
-				D891F3341A83E459003F101B /* Default.swift */,
+				D891F3341A83E459003F101B /* DefaultEndings.swift */,
 				D891F3321A83E2FB003F101B /* KAHN.swift */,
 				252A14071A2D7AEA00C4B5D3 /* Supporting Files */,
 			);
@@ -216,7 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D891F3331A83E2FB003F101B /* KAHN.swift in Sources */,
-				D891F3351A83E459003F101B /* Default.swift in Sources */,
+				D891F3351A83E459003F101B /* DefaultEndings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
