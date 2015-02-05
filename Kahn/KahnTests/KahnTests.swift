@@ -8,8 +8,15 @@
 
 import UIKit
 import XCTest
+import Kahn
 
 class KahnTests: XCTestCase {
+    class HTTPBin : Endpoint {
+        override init() {
+            super.init()
+            self.baseURL = (NSURL(string: "https://httpbin.org")!, nil)
+        }
+    }
     
     override func setUp() {
         super.setUp()
@@ -21,24 +28,17 @@ class KahnTests: XCTestCase {
         super.tearDown()
     }
     
-    func testAuthentication() {
-        
-    }
-    
     func testHTTPBinGet() {
-        
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
+        let get = HTTPBin().setEndpoint("get").GET()
+        get (options:nil) { (data, response, error) -> Void in
+            println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
         }
     }
     
+    func testHTTPBinPost() {
+        let post = HTTPBin().setEndpoint("post").POST(nil)
+        post (options:nil) { (data, response, error) -> Void in
+            println(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
+        }
+    }
 }
