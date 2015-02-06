@@ -17,3 +17,4 @@ Features / TODO list:
 - [ ] request merging
 - [ ] setFullURL(url:NSURL)
 - [ ] validation
+- [ ] .copy()
