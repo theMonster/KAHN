@@ -15,3 +15,4 @@ Features / TODO list:
 - [ ] get parameters
 - [ ] request chaining
 - [ ] request merging
+- [ ] setFullURL(url:NSURL)
