@@ -11,7 +11,7 @@ Features / TODO list:
 - [ ] JSON endings
 - [ ] Serializer
 - [ ] multipart upload
-- [ ] progress upload / dowload
+- [ ] progress upload / download
 - [ ] get parameters
 - [ ] request chaining
 - [ ] request merging
