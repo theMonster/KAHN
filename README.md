@@ -16,3 +16,4 @@ Features / TODO list:
 - [ ] request chaining
 - [ ] request merging
 - [ ] setFullURL(url:NSURL)
+- [ ] validation
