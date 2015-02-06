@@ -13,3 +13,5 @@ Features / TODO list:
 - [ ] multipart upload
 - [ ] progress upload / dowload
 - [ ] get parameters
+- [ ] request chaining
+- [ ] request merging
