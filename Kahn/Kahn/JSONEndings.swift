@@ -22,7 +22,7 @@ public extension Endpoint {
     public func GETJSON() -> ((options:[String:AnyObject]?, success:((data:AnyObject) -> Void), failure:(() -> Void)) -> Void) {
         return { (options, success, failure) in
             self.method = .GET
-            self.addHeaders(["Accept" : "application/json"])
+            self.addHeaders(["Content-Type" : "application/json"])
             self.makeRequest(options, response: { (data:NSData?, response:NSURLResponse?, error:NSError?) in
                 if error == nil && data != nil && response is NSHTTPURLResponse {
                     if let jsonData:AnyObject = data!.JSONObject {

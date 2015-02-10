@@ -49,16 +49,7 @@ public class Endpoint {
     }
     
     public func setEndpoint(var endpoint:String) -> Endpoint {
-        self.endpoint = { (options) in
-            if let options = options {
-                for option in options {
-                    if let value = option.1 as? String {
-                        endpoint = endpoint.stringByReplacingOccurrencesOfString("{\(option.0)}", withString: value, options: .LiteralSearch, range: nil)
-                    }
-                }
-            }
-            return endpoint
-        }
+        self.endpoint = { (_) in return endpoint }
         return self
     }
     
@@ -108,7 +99,16 @@ public class Endpoint {
             
             // do we have an endpoint?
             if let end = end {
-                url = NSURL(string: url.absoluteString! + "/" + end)!
+                var fullStringURL = url.absoluteString! + "/" + end
+                // de-tokenize
+                if let options = options {
+                    for option in options {
+                        if let value = option.1 as? String {
+                            fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(option.0)}", withString: value, options: .LiteralSearch, range: nil)
+                        }
+                    }
+                }
+                url = NSURL(string: fullStringURL)!
             }
             return url
         }
