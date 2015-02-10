@@ -16,7 +16,7 @@ class HTTPBin : Endpoint {
         self.setBaseURL(NSURL(string: "https://httpbin.org")!)
     }
 }
-let get = HTTPBin().setEndpoint("get").GET()
+let get = HTTPBin().setEndpoint("get") .GET()
 let post = HTTPBin().setEndpoint("post").POST(nil)
 let put = HTTPBin().setEndpoint("put").PUT(nil)
 let patch = HTTPBin().setEndpoint("patch").PATCH(nil)
@@ -31,6 +31,18 @@ class KahnTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+    
+    func testHTTPBinUserAgent() {
+        let e = expectationWithDescription("user-endpoint")
+        HTTPBin().setEndpoint("user-agent").GETJSON() (options: nil, success: { (object) in
+            println((object as [String:AnyObject])["user-agent"]!)
+            e.fulfill()
+        }, failure: { () in
+            e.fulfill()
+            XCTAssert(false, "failed")
+        })
+        waitForExpectationsWithTimeout(10, handler: nil)
     }
     
     func testHTTPBinGet() {

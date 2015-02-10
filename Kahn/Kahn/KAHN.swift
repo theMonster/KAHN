@@ -20,6 +20,10 @@ public enum HTTPMethod: String {
     case CONNECT = "CONNECT"
 }
 
+public enum EndpointLogLevel {
+    case None, Minimal
+}
+
 public class Endpoint {
     public typealias BuildStringClosure = ((options:[String:AnyObject]?) -> String)
     public typealias BuildURLClosure = ((options:[String:AnyObject]?) -> NSURL)
@@ -28,8 +32,9 @@ public class Endpoint {
     public var method:HTTPMethod = .GET
     public var baseURL:BuildURLClosure?
     public var endpoint:BuildStringClosure?
-    public var headers:[String:String]?
+    public var headers = [String:String]()
     public var body:BuildDataClosure?
+    public var logLevel:EndpointLogLevel = .None
     
     public init() {}
     
@@ -43,8 +48,22 @@ public class Endpoint {
         return self
     }
     
-    public func setEndpoint(endpoint:String) -> Endpoint {
-        self.endpoint = { (_) in return endpoint }
+    public func setEndpoint(var endpoint:String) -> Endpoint {
+        self.endpoint = { (options) in
+            if let options = options {
+                for option in options {
+                    if let value = option.1 as? String {
+                        endpoint = endpoint.stringByReplacingOccurrencesOfString("{\(option.0)}", withString: value, options: .LiteralSearch, range: nil)
+                    }
+                }
+            }
+            return endpoint
+        }
+        return self
+    }
+    
+    public func setLogLevel(level:EndpointLogLevel) -> Endpoint {
+        self.logLevel = level
         return self
     }
     
@@ -56,6 +75,17 @@ public class Endpoint {
     public func setHeaders(headers:[String:String]) -> Endpoint {
         self.headers = headers
         return self
+    }
+    
+    public func addHeaders(headers:[String:String]) -> Endpoint {
+        for key in headers.keys {
+            self.headers[key] = headers[key]
+        }
+        return self
+    }
+    
+    internal func isValidResponse(data:NSData?, response:NSURLResponse?, error:NSError?) -> Bool {
+        return true
     }
     
     internal func makeRequest(options:[String:AnyObject]?, response:((data:NSData?, response:NSURLResponse?, error:NSError?) -> Void)) {
@@ -92,5 +122,11 @@ public class Endpoint {
         // set the task and run it
         let task = session.dataTaskWithRequest(request, completionHandler: response)
         task.resume()
+        // log the task
+        switch logLevel {
+        case .Minimal:
+             println("Kahn: Outgoing HTTP \(method.rawValue) Request to \(request.URL!)")
+        default: break
+        }
     }
 }

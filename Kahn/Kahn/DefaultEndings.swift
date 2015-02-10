@@ -9,8 +9,8 @@
 import Foundation
 
 public extension Endpoint {
-    public typealias DefaultResponseClosure = ((data:NSData?, response:NSURLResponse?, error:NSError?) -> Void)
     public typealias DefaultReturn = ((options:[String:AnyObject]?, response:DefaultResponseClosure) -> Void)
+    public typealias DefaultResponseClosure = ((data:NSData?, response:NSURLResponse?, error:NSError?) -> Void)
     
     public func GET() -> DefaultReturn {
         return { (options, response) in
