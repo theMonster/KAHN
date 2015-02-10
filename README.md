@@ -9,6 +9,7 @@ KAHN
 Features / TODO list:
 ----
 - [ ] JSON endings
+    - [x] GET
 - [ ] Serializer
 - [ ] multipart upload
 - [ ] progress upload / download
