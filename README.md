@@ -20,5 +20,5 @@ Features / TODO list:
 - [ ] setFullURL(url:NSURL)
 - [ ] validation
 - [ ] .copy()
-- [x] tokenized urls (i.e: setEndpoint("some/url/{my_token}") my_token get's replaced with a string value provided in options)
+- [x] keyed urls (i.e: setEndpoint("some/url/{my_token}") my_token get's replaced with a string value provided in options)
 - [ ] default value for token (i.e: setEndpoint("some/url/{my_token=somewhere}"
