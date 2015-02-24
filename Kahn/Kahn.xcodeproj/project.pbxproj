@@ -12,6 +12,7 @@
 		252A14171A2D7AEA00C4B5D3 /* KahnTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252A14161A2D7AEA00C4B5D3 /* KahnTests.swift */; };
 		D83325BA1A852CDC00852C3C /* JSONEndings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83325B91A852CDC00852C3C /* JSONEndings.swift */; };
 		D83B47B01A8A73E900557713 /* NetworkHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83B47AF1A8A73E900557713 /* NetworkHelpers.swift */; };
+		D88C80AA1A9C1008001875CF /* UIImageEndings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88C80A91A9C1007001875CF /* UIImageEndings.swift */; };
 		D891F3331A83E2FB003F101B /* KAHN.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891F3321A83E2FB003F101B /* KAHN.swift */; };
 		D891F3351A83E459003F101B /* DefaultEndings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891F3341A83E459003F101B /* DefaultEndings.swift */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 		252A14161A2D7AEA00C4B5D3 /* KahnTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KahnTests.swift; sourceTree = "<group>"; };
 		D83325B91A852CDC00852C3C /* JSONEndings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONEndings.swift; sourceTree = "<group>"; };
 		D83B47AF1A8A73E900557713 /* NetworkHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkHelpers.swift; sourceTree = "<group>"; };
+		D88C80A91A9C1007001875CF /* UIImageEndings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageEndings.swift; sourceTree = "<group>"; };
 		D891F3321A83E2FB003F101B /* KAHN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KAHN.swift; sourceTree = "<group>"; };
 		D891F3341A83E459003F101B /* DefaultEndings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultEndings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,6 +83,7 @@
 			children = (
 				252A14091A2D7AEA00C4B5D3 /* Kahn.h */,
 				D83B47AF1A8A73E900557713 /* NetworkHelpers.swift */,
+				D88C80A91A9C1007001875CF /* UIImageEndings.swift */,
 				D83325B91A852CDC00852C3C /* JSONEndings.swift */,
 				D891F3341A83E459003F101B /* DefaultEndings.swift */,
 				D891F3321A83E2FB003F101B /* KAHN.swift */,
@@ -224,6 +227,7 @@
 				D83B47B01A8A73E900557713 /* NetworkHelpers.swift in Sources */,
 				D891F3331A83E2FB003F101B /* KAHN.swift in Sources */,
 				D83325BA1A852CDC00852C3C /* JSONEndings.swift in Sources */,
+				D88C80AA1A9C1008001875CF /* UIImageEndings.swift in Sources */,
 				D891F3351A83E459003F101B /* DefaultEndings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

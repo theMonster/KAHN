@@ -79,9 +79,14 @@ public class Endpoint {
         return self
     }
     
-    public func add(headers:[String:String]) -> Endpoint {
-        for key in headers.keys {
-            self.headers[key] = headers[key]
+    public func setTokens(tokens:[String:String]) -> Endpoint {
+        self.tokens = tokens
+        return self
+    }
+    
+    public func addTokens(tokens:[String:String]) -> Endpoint {
+        for key in tokens.keys {
+            self.tokens[key] = tokens[key]
         }
         return self
     }
@@ -103,67 +108,75 @@ public class Endpoint {
     internal func makeRequest(options:[String:AnyObject]?, response:((data:NSData?, response:NSURLResponse?, error:NSError?) -> Void)) {
         let config = NSURLSessionConfiguration.ephemeralSessionConfiguration()
         let session = NSURLSession(configuration: config, delegate: nil, delegateQueue: NSOperationQueue.mainQueue())
-        // build url
-        func buildFullURL() -> NSURL {
-            // get url
-            var url:NSURL
-            if let baseURLClosure = baseURL {
-                url = baseURLClosure(options: options)
-            } else {
-                fatalError("You must set a baseURL to hit")
-            }
-            // get endpoint
-            var end:String?
-            if let endpointClosure = endpoint {
-                end = endpointClosure(options: options)
-            }
-            
-            // do we have an endpoint?
-            if let end = end {
-                var fullStringURL = url.absoluteString! + "/" + end
-                // de-tokenize
-                if let options = options {
-                    for token in tokens {
-                        fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(token.0)}", withString: token.1, options: .LiteralSearch, range: nil)
-                    }
-                    for option in options {
-                        if let value = option.1 as? String {
-                            fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(option.0)}", withString: value, options: .LiteralSearch, range: nil)
+        
+        let fire = { () -> Void in
+            // build url
+            func buildFullURL() -> NSURL {
+                // get url
+                var url:NSURL
+                if let baseURLClosure = baseURL {
+                    url = baseURLClosure(options: options)
+                } else {
+                    fatalError("You must set a baseURL to hit")
+                }
+                // get endpoint
+                var end:String?
+                if let endpointClosure = endpoint {
+                    end = endpointClosure(options: options)
+                }
+                
+                // do we have an endpoint?
+                if let end = end {
+                    var fullStringURL = url.absoluteString! + "/" + end
+                    // de-tokenize
+                    if let options = options {
+                        for token in tokens {
+                            fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(token.0)}", withString: token.1, options: .LiteralSearch, range: nil)
+                        }
+                        for option in options {
+                            if let value = option.1 as? String {
+                                fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(option.0)}", withString: value, options: .LiteralSearch, range: nil)
+                            }
                         }
                     }
+                    url = NSURL(string: fullStringURL)!
                 }
-                url = NSURL(string: fullStringURL)!
+                return url
             }
-            return url
+            let request = NSMutableURLRequest(URL: buildFullURL())
+            request.HTTPMethod = self.method.rawValue
+            request.allHTTPHeaderFields = self.headers
+            // get the body if there is one
+            if let body = self.body {
+                request.HTTPBody = body(options: options)
+            }
+            // set the task up
+            var task = session.dataTaskWithRequest(request, completionHandler: { (data:NSData!, response_var:NSURLResponse!, error:NSError!) -> Void in
+                response(data: data, response: response_var, error: error)
+                self.didHitEndpoint?()
+                return
+            })
+            task.resume()
+            
+            // log the task
+            switch self.logLevel {
+            case .Minimal:
+                println("Kahn: Outgoing HTTP \(self.method.rawValue) Request to \(request.URL!)")
+            default: break
+            }
         }
-        let request = NSMutableURLRequest(URL: buildFullURL())
-        request.HTTPMethod = method.rawValue
-        request.allHTTPHeaderFields = self.headers
-        // get the body if there is one
-        if let body = self.body {
-            request.HTTPBody = body(options: options)
-        }
-        // set the task up
-        let task = session.dataTaskWithRequest(request, completionHandler: { (data:NSData!, response_var:NSURLResponse!, error:NSError!) -> Void in
-            response(data: data, response: response_var, error: error)
-            self.didHitEndpoint?()
-            return
-        })
         
+        // fire
         if let willHitEndpoint = willHitEndpoint {
             willHitEndpoint { (shouldContinue:Bool) in
                 if shouldContinue {
-                    task.resume()
+                    fire()
+                } else {
+                    response(data: nil, response: nil, error: NSError(domain: "Should continue failed. WillHitEndpoint's callback returned false", code: 1, userInfo: nil))
                 }
             }
         } else {
-            task.resume()
-        }
-        // log the task
-        switch logLevel {
-        case .Minimal:
-             println("Kahn: Outgoing HTTP \(method.rawValue) Request to \(request.URL!)")
-        default: break
+            fire()
         }
     }
 }
