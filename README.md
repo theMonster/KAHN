@@ -9,12 +9,16 @@ KAHN
 Features / TODO list:
 ----
 - [ ] JSON endings
+   - [x] GET
 - [ ] Serializer
 - [ ] multipart upload
 - [ ] progress upload / download
 - [ ] get parameters
-- [ ] request chaining
+- [ ] request closure chaining (i.e: endpoint.GET() { .. closure .. }.POST() { .. closure .. })
+- [ ] request chaining (i.e: endpoint1 & endpoint2.GET(){ (responseFrom1, responseFrom2) in .. closure .. }
 - [ ] request merging
 - [ ] setFullURL(url:NSURL)
 - [ ] validation
 - [ ] .copy()
+- [x] keyed urls (i.e: setEndpoint("some/url/{my_token}") my_token get's replaced with a string value provided in options)
+- [ ] default value for key (i.e: setEndpoint("some/url/{my_token=somewhere}"
