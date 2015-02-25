@@ -21,7 +21,7 @@ public enum HTTPMethod: String {
 }
 
 public enum EndpointLogLevel {
-    case None, Minimal
+    case None, Minimal, Medium
 }
 
 public class Endpoint {
@@ -39,6 +39,7 @@ public class Endpoint {
     public var logLevel:EndpointLogLevel = .None
     public var willHitEndpoint:WillHitEndpointClosure?
     public var didHitEndpoint:DidHitEndpointClosure?
+    public var cache:NSCache?
     
     public init() {}
     
@@ -101,6 +102,11 @@ public class Endpoint {
         return self
     }
     
+    public func setCache(cache:NSCache) -> Endpoint {
+        self.cache = cache
+        return self
+    }
+    
     internal func isValidResponse(data:NSData?, response:NSURLResponse?, error:NSError?) -> Bool {
         return true
     }
@@ -129,10 +135,10 @@ public class Endpoint {
                 if let end = end {
                     var fullStringURL = url.absoluteString! + "/" + end
                     // de-tokenize
+                    for token in tokens {
+                        fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(token.0)}", withString: token.1, options: .LiteralSearch, range: nil)
+                    }
                     if let options = options {
-                        for token in tokens {
-                            fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(token.0)}", withString: token.1, options: .LiteralSearch, range: nil)
-                        }
                         for option in options {
                             if let value = option.1 as? String {
                                 fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(option.0)}", withString: value, options: .LiteralSearch, range: nil)
@@ -151,15 +157,53 @@ public class Endpoint {
                 request.HTTPBody = body(options: options)
             }
             // set the task up
-            var task = session.dataTaskWithRequest(request, completionHandler: { (data:NSData!, response_var:NSURLResponse!, error:NSError!) -> Void in
-                response(data: data, response: response_var, error: error)
-                self.didHitEndpoint?()
-                return
-            })
-            task.resume()
+            var didHaveResponseStoredInCache = false
+            if let cache = self.cache {
+                if let url = request.URL?.absoluteString {
+                    if let data = cache.objectForKey(url) as? NSData {
+                        response(data: data, response: nil, error: nil)
+                        // log the task
+                        switch self.logLevel {
+                        case .Medium:
+                            println("Kahn: Cached Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with data \(NSString(data: data, encoding: NSUTF8StringEncoding))")
+                        case .Minimal:
+                            println("Kahn: Cached Incoming HTTP \(self.method.rawValue) Response to \(request.URL!)")
+                        default: break
+                        }
+                        didHaveResponseStoredInCache = true
+                    }
+                }
+            }
+            
+            if !didHaveResponseStoredInCache {
+                var task = session.dataTaskWithRequest(request, completionHandler: { (data:NSData!, response_var:NSURLResponse!, error:NSError!) -> Void in
+                    response(data: data, response: response_var, error: error)
+                    // log the task
+                    switch self.logLevel {
+                    case .Medium:
+                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with data \(NSString(data: data, encoding: NSUTF8StringEncoding))")
+                    case .Minimal:
+                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!)")
+                    default: break
+                    }
+                    // cache if we have a response and what not
+                    if let data = data {
+                        if let url = request.URL?.absoluteString {
+                            if let cache = self.cache {
+                                cache.setObject(data, forKey: request.URL!.absoluteString!)
+                            }
+                        }
+                    }
+                    self.didHitEndpoint?()
+                    return
+                })
+                task.resume()
+            }
             
             // log the task
             switch self.logLevel {
+            case .Medium:
+                println("Kahn: Outgoing HTTP \(self.method.rawValue) Request to \(request.URL!) with body \(self.body)")
             case .Minimal:
                 println("Kahn: Outgoing HTTP \(self.method.rawValue) Request to \(request.URL!)")
             default: break

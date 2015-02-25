@@ -24,15 +24,17 @@ public extension Endpoint {
             self.method = .GET
             self.addHeaders(["Content-Type" : "application/json"])
             self.makeRequest(options, response: { (data:NSData?, response:NSURLResponse?, error:NSError?) in
-                if error == nil && data != nil && response is NSHTTPURLResponse {
-                    if let jsonData:AnyObject = data!.JSONObject {
-                        success(data: jsonData)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if error == nil && data != nil && response is NSHTTPURLResponse {
+                        if let jsonData:AnyObject = data!.JSONObject {
+                            success(data: jsonData)
+                        } else {
+                            failure()
+                        }
                     } else {
                         failure()
                     }
-                } else {
-                    failure()
-                }
+                })
             })
         }
     }
