@@ -29,7 +29,6 @@ public class Endpoint {
     public typealias BuildURLClosure = ((options:[String:AnyObject]?) -> NSURL)
     public typealias BuildDataClosure = ((options:[String:AnyObject]?) -> NSData?)
     public typealias WillHitEndpointClosure = ((completionHandler:((Bool) -> Void)) -> Void)
-    public typealias DidHitEndpointClosure = (() -> Void)
     public var method:HTTPMethod = .GET
     public var baseURL:BuildURLClosure?
     public var endpoint:BuildStringClosure?
@@ -38,7 +37,7 @@ public class Endpoint {
     public var body:BuildDataClosure?
     public var logLevel:EndpointLogLevel = .None
     public var willHitEndpoint:WillHitEndpointClosure?
-    public var didHitEndpoint:DidHitEndpointClosure?
+    public var didHitEndpoint:DefaultResponseClosure?
     public var cache:NSCache?
     
     public init() {}
@@ -97,7 +96,7 @@ public class Endpoint {
         return self
     }
     
-    public func setDidHitEndpoint(closure:DidHitEndpointClosure) -> Endpoint {
+    public func setDidHitEndpoint(closure:DefaultResponseClosure) -> Endpoint {
         self.didHitEndpoint = closure
         return self
     }
@@ -194,7 +193,7 @@ public class Endpoint {
                             }
                         }
                     }
-                    self.didHitEndpoint?()
+                    self.didHitEndpoint?(data: data, response: response_var, error: error)
                     return
                 })
                 task.resume()
