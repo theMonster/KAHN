@@ -13,7 +13,6 @@ private extension NSData {
         return NSString(data: self, encoding: NSUTF8StringEncoding)!
     }
     var JSONObject:AnyObject? {
-        let s = self.string
         return NSJSONSerialization.JSONObjectWithData(self, options: .allZeros, error: nil)
     }
 }
