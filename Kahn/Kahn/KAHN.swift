@@ -56,7 +56,7 @@ public class Endpoint {
         self.endpoint = { (_) in return endpoint }
         return self
     }
-
+    
     public func setEndpoint(closure:BuildStringClosure) -> Endpoint {
         self.endpoint = closure
         return self
