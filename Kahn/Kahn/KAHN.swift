@@ -144,7 +144,7 @@ public class Endpoint {
                             }
                         }
                     }
-                    url = NSURL(string: fullStringURL)!
+                    url = NSURL(string: fullStringURL.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!)!
                 }
                 return url
             }
