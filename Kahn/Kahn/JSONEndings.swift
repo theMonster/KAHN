@@ -44,11 +44,34 @@ public extension Endpoint {
         }
     }
     
-    public func POSTJSON() -> ((body:NSDictionary, options:[String:AnyObject]?, success:((data:AnyObject) -> Void), failure:(() -> Void)) -> Void) {
+    public func POSTJSON() -> ((body:NSDictionary?, options:[String:AnyObject]?, success:((data:AnyObject) -> Void), failure:(() -> Void)) -> Void) {
         return { (body, options, success, failure) in
             self.method = .POST
             self.body = { (options) in
-                return body.JSONData
+                return body?.JSONData
+            }
+            self.addHeaders(["Content-Type" : "application/json"])
+            self.makeRequest(options, response: { (data, response, error) -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if error == nil && data != nil && response is NSHTTPURLResponse {
+                        if let jsonData:AnyObject = data!.JSONObject {
+                            success(data: jsonData)
+                        } else {
+                            failure()
+                        }
+                    } else {
+                        failure()
+                    }
+                })
+            })
+        }
+    }
+    
+    public func POSTRAW() -> ((body:NSData?, options:[String:AnyObject]?, success:((data:AnyObject) -> Void), failure:(() -> Void)) -> Void) {
+        return { (body, options, success, failure) in
+            self.method = .POST
+            self.body = { (options) in
+                return body
             }
             self.addHeaders(["Content-Type" : "application/json"])
             self.makeRequest(options, response: { (data, response, error) -> Void in
