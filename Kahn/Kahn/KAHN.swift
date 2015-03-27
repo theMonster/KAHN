@@ -8,6 +8,12 @@
 
 import Foundation
 
+private extension NSData {
+    var string:String {
+        return NSString(data: self, encoding: NSUTF8StringEncoding)!
+    }
+}
+
 public enum HTTPMethod: String {
     case OPTIONS = "OPTIONS"
     case GET = "GET"
@@ -164,7 +170,7 @@ public class Endpoint {
                         // log the task
                         switch self.logLevel {
                         case .Medium:
-                            println("Kahn: Cached Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with data \(NSString(data: data, encoding: NSUTF8StringEncoding))")
+                            println("Kahn: Cached Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with body \(self.body?(options: options)?.string)")
                         case .Minimal:
                             println("Kahn: Cached Incoming HTTP \(self.method.rawValue) Response to \(request.URL!)")
                         default: break
@@ -180,7 +186,7 @@ public class Endpoint {
                     // log the task
                     switch self.logLevel {
                     case .Medium:
-                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with data \(NSString(data: data, encoding: NSUTF8StringEncoding))")
+                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with body \(self.body?(options: options)?.string)")
                     case .Minimal:
                         println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!)")
                     default: break
@@ -202,7 +208,7 @@ public class Endpoint {
             // log the task
             switch self.logLevel {
             case .Medium:
-                println("Kahn: Outgoing HTTP \(self.method.rawValue) Request to \(request.URL!) with body \(self.body)")
+                println("Kahn: Outgoing HTTP \(self.method.rawValue) Request to \(request.URL!) with body \(self.body?(options: options)?.string)")
             case .Minimal:
                 println("Kahn: Outgoing HTTP \(self.method.rawValue) Request to \(request.URL!)")
             default: break
