@@ -186,7 +186,7 @@ public class Endpoint {
                     // log the task
                     switch self.logLevel {
                     case .Medium:
-                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with body \(self.body?(options: options)?.string)")
+                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with body \(data.string)")
                     case .Minimal:
                         println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!)")
                     default: break
