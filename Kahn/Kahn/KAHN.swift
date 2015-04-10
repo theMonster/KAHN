@@ -9,8 +9,8 @@
 import Foundation
 
 private extension NSData {
-    var string:String {
-        return NSString(data: self, encoding: NSUTF8StringEncoding)!
+    var string:String? {
+        return NSString(data: self, encoding: NSUTF8StringEncoding)
     }
 }
 
@@ -186,15 +186,20 @@ public class Endpoint {
                     // log the task
                     switch self.logLevel {
                     case .Medium:
-                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!) with body \(data.string)")
+                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL) with body \(data?.string)")
                     case .Minimal:
-                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL!)")
+                        println("Kahn: Incoming HTTP \(self.method.rawValue) Response to \(request.URL)")
                     default: break
                     }
                     // cache if we have a response and what not
                     if let data = data {
                         if let url = request.URL?.absoluteString {
                             if let cache = self.cache {
+                                switch self.logLevel {
+                                case .Medium:
+                                    println("Kahn: Caching response to \(request.URL)")
+                                default: break
+                                }
                                 cache.setObject(data, forKey: request.URL!.absoluteString!)
                             }
                         }
