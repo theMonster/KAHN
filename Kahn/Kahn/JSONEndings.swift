@@ -16,7 +16,7 @@ private extension NSDictionary {
 
 private extension NSData {
     var string:String {
-        return NSString(data: self, encoding: NSUTF8StringEncoding)!
+        return NSString(data: self, encoding: NSUTF8StringEncoding)! as String
     }
     var JSONObject:AnyObject? {
         return NSJSONSerialization.JSONObjectWithData(self, options: .allZeros, error: nil)

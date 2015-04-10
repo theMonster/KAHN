@@ -10,7 +10,7 @@ import Foundation
 
 private extension NSData {
     var string:String? {
-        return NSString(data: self, encoding: NSUTF8StringEncoding)
+        return NSString(data: self, encoding: NSUTF8StringEncoding) as? String
     }
 }
 
@@ -125,14 +125,14 @@ public class Endpoint {
             func buildFullURL() -> NSURL {
                 // get url
                 var url:NSURL
-                if let baseURLClosure = baseURL {
+                if let baseURLClosure = self.baseURL {
                     url = baseURLClosure(options: options)
                 } else {
                     fatalError("You must set a baseURL to hit")
                 }
                 // get endpoint
                 var end:String?
-                if let endpointClosure = endpoint {
+                if let endpointClosure = self.endpoint {
                     end = endpointClosure(options: options)
                 }
                 
@@ -140,7 +140,7 @@ public class Endpoint {
                 if let end = end {
                     var fullStringURL = url.absoluteString! + "/" + end
                     // de-tokenize
-                    for token in tokens {
+                    for token in self.tokens {
                         fullStringURL = fullStringURL.stringByReplacingOccurrencesOfString("{\(token.0)}", withString: token.1, options: .LiteralSearch, range: nil)
                     }
                     if let options = options {

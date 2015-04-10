@@ -22,7 +22,7 @@ public extension Endpoint {
         return { (options, response) in
             self.body = { (_) in return body }
             self.method = .POST
-            self.makeRequest(options, response)
+            self.makeRequest(options, response: response)
         }
     }
     
@@ -30,7 +30,7 @@ public extension Endpoint {
         return { (options, response) in
             self.body = body
             self.method = .POST
-            self.makeRequest(options, response)
+            self.makeRequest(options, response: response)
         }
     }
     
@@ -38,7 +38,7 @@ public extension Endpoint {
         return { (options, response) in
             self.body = { (_) in return body }
             self.method = .PUT
-            self.makeRequest(options, response)
+            self.makeRequest(options, response: response)
         }
     }
     
@@ -46,7 +46,7 @@ public extension Endpoint {
         return { (options, response) in
             self.body = body
             self.method = .PUT
-            self.makeRequest(options, response)
+            self.makeRequest(options, response: response)
         }
     }
     
@@ -54,7 +54,7 @@ public extension Endpoint {
         return { (options, response) in
             self.body = { (_) in return body }
             self.method = .PATCH
-            self.makeRequest(options, response)
+            self.makeRequest(options, response: response)
         }
     }
     
@@ -62,7 +62,7 @@ public extension Endpoint {
         return { (options, response) in
             self.body = body
             self.method = .PATCH
-            self.makeRequest(options, response)
+            self.makeRequest(options, response: response)
         }
     }
     
